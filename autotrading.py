@@ -66,10 +66,10 @@ while True:
                 krw = get_balance("KRW")
                 if krw > 5000:
                     upbit.buy_market_order("KRW-NEO", krw*0.9995)
-            if now_price < target_price2
+            if now_price < target_price2:
                 NEO = get_balance("NEO")
                 if NEO > 0.05:
-                upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
+                    upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
         else:
             NEO = get_balance("NEO")
             if NEO > 0.05:
