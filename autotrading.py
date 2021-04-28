@@ -58,7 +58,7 @@ while True:
         end_time = start_time + datetime.timedelta(days=1)
 
         if start_time < now < end_time - datetime.timedelta(seconds=10):
-            target_price2 = get_target_price2(ticker)
+            target_price2 = get_target_price2("KRW-NEO")
             target_price = get_target_price("KRW-NEO", 0.8)
             current_price = get_current_price("KRW-NEO")
             now_price=nowprice("KRW-NEO")
