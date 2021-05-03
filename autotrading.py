@@ -2,29 +2,28 @@ import time
 import pyupbit
 import datetime
 
-access = ""          # 본인 값으로 변경
-secret = ""          # 본인 값으로 변경
-
+access = ""          # 
+secret = ""          # 
 
 
 def get_target_price(ticker, k):
-    df = pyupbit.get_ohlcv(ticker, interval="day", count=2)  #시가, 고가, 저가, 종가(당일 현재가), 거래량
+    df = pyupbit.get_ohlcv(ticker, interval="day", count=2)  
     target_price = df.iloc[0]['low'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * k
     return target_price
 
 def get_target_price2(ticker,kk):
-    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)  #시가, 고가, 저가, 종가(당일 현재가), 거래량
+    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1) 
     target_price2 = dft.iloc[0]['high'] * kk
     return target_price2
 
 
 def highprice(ticker):
-    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)  #시가, 고가, 저가, 종가(당일 현재가), 거래량
+    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)  
     high_price = dft.iloc[0]['high']
     return high_price
 
 def openprice(ticker):
-    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)  #시가, 고가, 저가, 종가(당일 현재가), 거래량
+    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)  
     openp = dft.iloc[0]['open']
     return openp
 
