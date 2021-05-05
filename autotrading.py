@@ -2,28 +2,29 @@ import time
 import pyupbit
 import datetime
 
-access = ""          # 
-secret = ""          # 
+access = ""          #
+secret = ""          #
+
 
 
 def get_target_price(ticker, k):
-    df = pyupbit.get_ohlcv(ticker, interval="day", count=2)  
+    df = pyupbit.get_ohlcv(ticker, interval="day", count=2)
     target_price = df.iloc[0]['low'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * k
     return target_price
 
 def get_target_price2(ticker,kk):
-    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1) 
+    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)
     target_price2 = dft.iloc[0]['high'] * kk
     return target_price2
 
 
 def highprice(ticker):
-    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)  
+    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)
     high_price = dft.iloc[0]['high']
     return high_price
 
 def openprice(ticker):
-    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)  
+    dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)
     openp = dft.iloc[0]['open']
     return openp
 
@@ -48,8 +49,8 @@ def get_current_price(ticker):
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
-buyprice = 0;
-
+buyprice = 0
+sellpoint = 0
 while True:
     try:
         now = datetime.datetime.now()
@@ -75,13 +76,14 @@ while True:
                     NEO = get_balance("NEO")
                     if NEO > 0.05:
                         upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
-
+                        sellpoint = sellpoint + 1
                 if current_price < buyprice * 0.98:         # limit loss
                     NEO = get_balance("NEO")
-                    if NEO > 0.05:
+                    if NEO > 0.05 and sellpoint < 2:
                         upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
-
+                        sellpoint = sellpoint + 1
         else:
+            sellpoint = 0
             NEO = get_balance("NEO")
             if NEO > 0.05:
                 upbit.sell_market_order("KRW-NEO", NEO*0.9995)
