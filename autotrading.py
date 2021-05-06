@@ -12,6 +12,11 @@ def get_target_price(ticker, k):
     target_price = df.iloc[0]['low'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * k
     return target_price
 
+def get_yesterday(ticker)
+    df = pyupbit.get_ohlcv(ticker, interval="day", count=2)
+    yesterhigh = df.iloc[0]['high']
+    return yesterhigh
+
 def get_target_price2(ticker,kk):
     dft = pyupbit.get_ohlcv(ticker, interval="day", count=1)
     target_price2 = dft.iloc[0]['high'] * kk
@@ -63,7 +68,7 @@ while True:
             current_price = get_current_price("KRW-NEO")
             high_price = highprice("KRW-NEO")
             open_price = openprice("KRW-NEO")
-
+            yester_high = get_yesterday("KRW-NEO")
 
 
             if target_price < current_price and high_price*0.99 < current_price :
@@ -72,29 +77,23 @@ while True:
                     upbit.buy_market_order("KRW-NEO", krw*0.9995)
                     buyprice = max(target_price, open_price, high_price*0.99) +200
 
-            if open_price < current_price and current_price < sellprice * 0.98:
-                krw = get_balance("KRW")
-                if krw > 5000:
-                    upbit.buy_market_order("KRW-NEO", krw * 0.9995)
-                    buyprice = current_price + 200
-
             if buyprice > 0:
-                if buyprice + 500 < current_price < high_price * 0.98: #earn profit
-                    NEO = get_balance("NEO")
-                    if NEO > 0.05:
-                        upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
-                        sellpoint = sellpoint + 1
-                        sellprice = current_price
-                if buyprice * 1.02 < current_price < high_price * 0.99: #earn profit2
-                    NEO = get_balance("NEO")
-                    if NEO > 0.05:
-                        upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
-                        sellpoint = sellpoint + 1
-                        sellprice = current_price
-
-                if current_price < buyprice * 0.98 :         # limit loss
+                if buyprice + 500 < current_price < high_price * 0.975: #earn profit
                     NEO = get_balance("NEO")
                     if NEO > 0.05 and sellpoint < 2:
+                        upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
+                        sellpoint = sellpoint + 1
+                        sellprice = current_price
+                if buyprice * 1.05 < current_price < high_price * 0.99: #earn profit2
+                    NEO = get_balance("NEO")
+                    if NEO > 0.05 and sellpoint < 2:
+                        upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
+                        sellpoint = sellpoint + 1
+                        sellprice = current_price
+
+                if current_price < buyprice * 0.995 and current_price < high_price * 0.93 and current_price < yester_high * 0.99:         # limit loss
+                    NEO = get_balance("NEO")
+                    if NEO > 0.05:
                         upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
                         sellpoint = sellpoint + 1
                         sellprice = current_price
