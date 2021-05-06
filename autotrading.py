@@ -77,7 +77,7 @@ while True:
                     if NEO > 0.05:
                         upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
                         sellpoint = sellpoint + 1
-                if current_price < buyprice * 0.98:         # limit loss
+                if current_price < buyprice * 0.98 and current_price < open_price:         # limit loss
                     NEO = get_balance("NEO")
                     if NEO > 0.05 and sellpoint < 2:
                         upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
