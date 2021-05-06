@@ -12,7 +12,7 @@ def get_target_price(ticker, k):
     target_price = df.iloc[0]['low'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * k
     return target_price
 
-def get_yesterday(ticker)
+def get_yesterday(ticker):
     df = pyupbit.get_ohlcv(ticker, interval="day", count=2)
     yesterhigh = df.iloc[0]['high']
     return yesterhigh
