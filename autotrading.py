@@ -51,6 +51,7 @@ print("autotrade start")
 
 buyprice = 0
 sellpoint = 0
+sellprice = 0
 while True:
     try:
         now = datetime.datetime.now()
@@ -69,7 +70,13 @@ while True:
                 krw = get_balance("KRW")
                 if krw > 5000:
                     upbit.buy_market_order("KRW-NEO", krw*0.9995)
-                    buyprice = max(target_price, open_price, high_price*0.99)
+                    buyprice = max(target_price, open_price, high_price*0.99) +200
+
+            if open_price < current_price and current_price < sellprice * 0.98:
+                krw = get_balance("KRW")
+                if krw > 5000:
+                    upbit.buy_market_order("KRW-NEO", krw * 0.9995)
+                    buyprice = current_price + 200
 
             if buyprice > 0:
                 if buyprice + 500 < current_price < high_price * 0.98: #earn profit
@@ -77,13 +84,24 @@ while True:
                     if NEO > 0.05:
                         upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
                         sellpoint = sellpoint + 1
-                if current_price < buyprice * 0.98 and current_price < open_price:         # limit loss
+                        sellprice = current_price
+                if buyprice * 1.02 < current_price < high_price * 0.99: #earn profit2
+                    NEO = get_balance("NEO")
+                    if NEO > 0.05:
+                        upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
+                        sellpoint = sellpoint + 1
+                        sellprice = current_price
+
+                if current_price < buyprice * 0.98 :         # limit loss
                     NEO = get_balance("NEO")
                     if NEO > 0.05 and sellpoint < 2:
                         upbit.sell_market_order("KRW-NEO", NEO * 0.9995)
                         sellpoint = sellpoint + 1
+                        sellprice = current_price
         else:
             sellpoint = 0
+            buyprice = 0
+            sellprice = 0
             NEO = get_balance("NEO")
             if NEO > 0.05:
                 upbit.sell_market_order("KRW-NEO", NEO*0.9995)
