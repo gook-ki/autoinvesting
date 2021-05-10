@@ -63,7 +63,7 @@ while True:
         start_time = get_start_time("KRW-NEO") # 9:00
         end_time = start_time + datetime.timedelta(days=1)
 
-        if start_time < now < end_time - datetime.timedelta(seconds=3):
+        if start_time < now < end_time - datetime.timedelta(seconds=10):
             target_price = get_target_price("KRW-NEO", 0.8)
             current_price = get_current_price("KRW-NEO")
             high_price = highprice("KRW-NEO")
